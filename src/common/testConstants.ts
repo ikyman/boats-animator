@@ -4,6 +4,7 @@ import { Project } from "./project/Project";
 import { Take } from "./project/Take";
 import { DEFAULT_PROJECT_FRAME_RATE, PROJECT_DIRECTORY_EXTENSION } from "./utils";
 import { IsoDateTimeString } from "./Flavors";
+import { makeTakeDirectoryName } from "../renderer/services/project/projectBuilder";
 
 export const PROJECT_NAME = "My Test Movie";
 export const PROJECT_DIRECTORY_NAME = `My-Test-Movie.${PROJECT_DIRECTORY_EXTENSION}`;
@@ -20,6 +21,7 @@ export const TAKE: Take = {
   lastSaved: new Date("2024-01-01").toISOString(),
   shotNumber: 1,
   takeNumber: 1,
+  takeDirectory: makeTakeDirectoryName(1,1),
   frameRate: 15,
   holdFrames: 1,
   frameTrack: {

@@ -6,7 +6,6 @@ import useProjectDirectory from "../../hooks/useProjectDirectory";
 import { FileInfoType } from "../../services/fileManager/FileInfo";
 import {
   makeProjectInfoFileJson,
-  makeTakeDirectoryName,
 } from "../../services/project/projectBuilder";
 import { FileManagerContext } from "../FileManagerContext/FileManagerContext";
 import { ProjectFilesContext } from "./ProjectFilesContext";
@@ -41,11 +40,12 @@ export const ProjectFilesContextProvider = ({ children }: ProjectFilesContextPro
       throw "Missing FileManager";
     }
 
-    const takeDirectoryName = makeTakeDirectoryName(take);
+    const takeDirectoryName = take.takeDirectory;
     const takeDirectoryHandle = await fileManager.createDirectory(
       takeDirectoryName,
       projectDirectory.handle
     );
+
 
     await fileManager.createFile(
       trackItem.fileInfoId,
