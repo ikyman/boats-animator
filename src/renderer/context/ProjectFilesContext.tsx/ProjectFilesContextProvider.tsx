@@ -12,9 +12,13 @@ import { ProjectFilesContext } from "./ProjectFilesContext";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Project } from "../../../common/project/Project";
-import { addFrameTrackItem, removeFrameTrackItem } from "../../redux/slices/projectSlice";
+import { addProject, updateProject, addFrameTrackItem, removeFrameTrackItem } from "../../redux/slices/projectSlice";
 import { RootState } from "../../redux/store";
 import * as rLogger from "../../services/rLogger/rLogger";
+
+import {PersistedDirectoryEntry, getDirectoryByName} from "../../services/database/PersistedDirectoryEntry";
+import {  ProjectInfoFileV1 } from "../../../common/project/ProjectInfoFile";
+
 
 interface ProjectFilesContextProviderProps {
   children: ReactNode;
@@ -116,6 +120,29 @@ export const ProjectFilesContextProvider = ({ children }: ProjectFilesContextPro
     }
   };
 
+  const loadProjectFromDisk= async (fileToLoadFrom: File): Promise<void>=>{
+    console.log("loadProjFromDisk");
+    const readText: string = await fileToLoadFrom.text();
+  
+    const parsedFile: ProjectInfoFileV1 = JSON.parse(readText);
+    
+    console.log(parsedFile);
+    console.log(parsedFile.project.directoryName);
+    const projectDirectoryEntry : PersistedDirectoryEntry | undefined = await getDirectoryByName(parsedFile.project.directoryName)
+  
+    if (projectDirectoryEntry === undefined){
+      throw "Schroedingers directory: This directory exists, but is not in the database";
+    }
+
+    dispatch(addProject({project : parsedFile.project, projectDirectoryId :  projectDirectoryEntry.id}));
+  
+    for (let i: number = 0; i < parsedFile.takes.length; ++i){
+      console.log("Number of takes:")
+      console.log(i)
+  
+    }
+  }
+
   useEffect(() => {
     if (projectDirectory !== undefined && project !== undefined && take !== undefined) {
       const [updatedProject, updatedTakes] = updateProjectAndTakeLastSaved(project, take);
@@ -126,7 +153,7 @@ export const ProjectFilesContextProvider = ({ children }: ProjectFilesContextPro
 
   return (
     <ProjectFilesContext.Provider
-      value={{ saveTrackItemToDisk, deleteTrackItem, getTrackItemObjectURL }}
+      value={{ saveTrackItemToDisk, deleteTrackItem, getTrackItemObjectURL, loadProjectFromDisk }}
     >
       {children}
     </ProjectFilesContext.Provider>
