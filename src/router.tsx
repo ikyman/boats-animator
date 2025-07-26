@@ -45,7 +45,6 @@ export const router = createHashRouter([
       {
         path: "/animator",
         element: (
-          <ProjectFilesContextProvider>
             <ImagingDeviceContextProvider>
               <CaptureContextProvider>
                 <PlaybackContextProvider>
@@ -54,7 +53,6 @@ export const router = createHashRouter([
                 </PlaybackContextProvider>
               </CaptureContextProvider>
             </ImagingDeviceContextProvider>
-          </ProjectFilesContextProvider>
         ),
         children: [
           {

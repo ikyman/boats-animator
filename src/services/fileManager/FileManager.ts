@@ -144,6 +144,29 @@ export class FileManager {
   findFile = (fileInfoId: FileInfoId): FileInfo | undefined =>
     this.fileInfos.find((f) => f.fileInfoId === fileInfoId);
 
+  openFileDialog = async (id: string): Promise<FileSystemFileHandle | undefined> => {
+    try {
+      const handle = await this.handleOpenFileDialog(id);
+      return handle;
+    } catch (e) {
+      if (e instanceof DOMException && e.name === "AbortError") {
+        rLogger.info("fileManager.cancelledFileDialog", `Cancelled file dialog id ${id}`);
+      } else {
+        throw e;
+      }
+    }
+  };
+
+  private handleOpenFileDialog = async (id: string): Promise<FileSystemFileHandle> => {
+    rLogger.info("fileManager.openFileDialog", `Opened file dialog id ${id}`);
+    const [handle] = await window.showOpenFilePicker({
+      id,
+      startIn: "documents",
+    });
+    rLogger.info("fileManager.selectedDirectory", `Selected document (${handle}) for id ${id}`);
+    return handle;
+  };
+
   openDirectoryDialog = async (id: string): Promise<FileSystemDirectoryHandle | undefined> => {
     try {
       const handle = await this.handleOpenDirectoryDialog(id);
