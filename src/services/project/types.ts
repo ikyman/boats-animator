@@ -11,12 +11,14 @@ import {
   TrackItemId,
 } from "../Flavors";
 
+import{CURRENT_PROJECT_INFO_FILE_SCHEMA_VERSION} from "../utils";
+
 interface ProjectInfoFileBase {
   schemaVersion: number;
 }
 
 export interface ProjectInfoFileV1 extends ProjectInfoFileBase {
-  schemaVersion: 1;
+  schemaVersion: CURRENT_PROJECT_INFO_FILE_SCHEMA_VERSION;
   appVersion: string;
   project: Project;
   takes: Take[];
@@ -34,6 +36,7 @@ export interface Take {
   id: TakeId;
   shotNumber: number;
   takeNumber: number;
+  takeDirectory: TakeDirectory;
   frameRate: FrameRate;
   holdFrames: FrameCount;
   frameTrack: Track;
