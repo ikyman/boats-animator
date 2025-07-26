@@ -38,7 +38,7 @@ export const ProjectFilesContextProvider = ({ children }: ProjectFilesContextPro
       throw "Missing projectDirectory";
     }
 
-    const takeDirectoryName = makeTakeDirectoryName(take);
+    const takeDirectoryName = makeTakeDirectoryName(take.shotNumber, take.takeNumber);
     const takeDirectoryHandle = await fileManager.createDirectory(
       takeDirectoryName,
       projectDirectory.handle

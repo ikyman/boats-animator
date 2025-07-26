@@ -9,6 +9,7 @@ import {
   TrackGroupId,
   TrackId,
   TrackItemId,
+  TakeDirectory,
 } from "../Flavors";
 
 import{CURRENT_PROJECT_INFO_FILE_SCHEMA_VERSION} from "../utils";
@@ -18,7 +19,7 @@ interface ProjectInfoFileBase {
 }
 
 export interface ProjectInfoFileV1 extends ProjectInfoFileBase {
-  schemaVersion: CURRENT_PROJECT_INFO_FILE_SCHEMA_VERSION;
+  schemaVersion: number;
   appVersion: string;
   project: Project;
   takes: Take[];
